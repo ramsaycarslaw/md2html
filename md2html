@@ -2,6 +2,7 @@
 
 # pandoc -s -f markdown -t html5 -o l2.html l2.md -c style.css
 
+
 style="html {
   font-size: 100%;
   overflow-y: scroll;
@@ -328,9 +329,16 @@ table td {
 }"
 
 files=*.md
+if [ -d "www" ]; then
+  rm -rf www
+  mkdir www
+else
+  mkdir www
+fi
+
+echo $style > www/style.css
+
 for item in ${files[*]}
 do
-  echo $style >> style.css
-  mkdir www
-  pandoc -s -f markdown -t html5 -o www/$item.html $item -c style.css;
+  pandoc -s -f markdown -t html5 -o www/$item.html $item -c style.css --metadata title="${item}";
 done
